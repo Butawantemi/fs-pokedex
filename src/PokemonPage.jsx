@@ -30,6 +30,7 @@ const PokemonPage = ({ previous, next }) => {
   console.log('hiddenAbility=', hiddenAbility)
   return (
     <>
+      <h1>Pokémon and Pokémon character names are trademarks of Nintendo.</h1>
       <div className="links">
         {previous && <Link to={`/pokemon/${previous.name}`}>Previous</Link>}
         <Link to="/">Home</Link>

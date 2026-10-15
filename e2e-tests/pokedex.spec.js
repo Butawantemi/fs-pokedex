@@ -1,0 +1,15 @@
+const { test, describe, expect, beforeEach } = require('@playwright/test')
+const baseUrl = "http://localhost:8080/"
+
+describe('Pokedex', () => {
+    
+  beforeEach(() => {
+
+  })
+
+  test('front page can be opened', async ({ page }) => {
+     await page.goto(baseUrl)
+    await expect(page.getByText('ivysaur')).toBeVisible()
+    await expect(page.getByText('Pokémon and Pokémon character names are trademarks of Nintendo.')).toBeVisible()
+  })
+})
