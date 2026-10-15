@@ -5,6 +5,13 @@ const globals = require('globals')
 
 module.exports = [
   {
+    languageOptions: {
+      globals: {
+        ...globals.node
+      }
+    }
+  },
+  {
     ignores: [
       'webpack.config.js',
       'eslint.config.js',
@@ -20,7 +27,7 @@ module.exports = [
       ecmaVersion: 2018,
       sourceType: 'commonjs',
       globals: {
-        ...globals.node
+        ...globals.globalThis
       }
     },
     rules: {
@@ -32,7 +39,7 @@ module.exports = [
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
       'arrow-spacing': ['error', { 'before': true, 'after': true }],
-      'no-console': 0
+      'no-console': 'off'
     }
   },
   {
