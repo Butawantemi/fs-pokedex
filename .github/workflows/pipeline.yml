@@ -32,8 +32,13 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
+  notify_success:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    steps:
+      - uses: actions/checkout@v4
       - name: Deployment Success Notification
-        if: ${{ success() && github.event_name == 'push' }}
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
@@ -42,8 +47,13 @@ jobs:
           title: "Deployment Succeeded"
           color: 0x2ecc71
 
+  notify_failure:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+    if: ${{ always() && needs.simple_deployment_pipeline.result == 'failure' }}
+    steps:
+      - uses: actions/checkout@v4
       - name: Build Failure Notification
-        if: ${{ failure() }}
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
@@ -61,7 +71,8 @@ jobs:
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && !contains(join(github.event_name.commit.*.message, ''), '#skip') }}
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+
     steps:
       - uses: actions/checkout@v4
       - name: Bump version and push tag
