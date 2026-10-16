@@ -1,4 +1,10 @@
 #!/bin/bash
 
+
+echo "Build script started..."
+
 npm install
-npm run start-prod
+
+npm run build
+
+echo "Build script completed successfully!"
