@@ -1,1 +1,1 @@
-live link on render: https://fs-pokedex-ssoz.onrender.com/pokemon
+live link: https://fs-pokedex-ssoz.onrender.com/pokemon
