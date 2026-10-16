@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 echo "Build script started..."
 
 npm install
