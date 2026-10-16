@@ -31,6 +31,33 @@ jobs:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+      - name: Deployment Success Notification
+        if: ${{ success() && github.event_name == 'push' }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: success
+          content: "A new version of the application has been successfully deployed to Render!"
+          title: "Deployment Succeeded"
+          color: 0x2ecc71
+
+      - name: Build Failure Notification
+        if: ${{ failure() }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: failure
+          content: "Alert! The CI/CD pipeline build has failed."
+          title: "Build Failed"
+          description: |
+            **Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+            **Author:** ${{ github.actor }}
+            **Message:** ${{ github.event.head_commit.message }}
+
+            [View Workflow Run Log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          color: 0xe74c3c
+
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-latest
